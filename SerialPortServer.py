@@ -1,7 +1,7 @@
 import os
 import socketserver
 
-class ForkingEchoRequestHandler(socketserver.BaseRequestHandler):
+class SerialPortServerRequestHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
         # Echo the back to the client
@@ -11,7 +11,7 @@ class ForkingEchoRequestHandler(socketserver.BaseRequestHandler):
         self.request.send(response.encode())
         return
 
-class ForkingEchoServer(socketserver.ForkingMixIn, socketserver.TCPServer):
+class SerialPortServer(socketserver.ForkingMixIn, socketserver.TCPServer):
     pass
 
 if __name__ == '__main__':
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     #server = ForkingEchoServer(address, ForkingEchoRequestHandler)
     server = socketserver.ForkingTCPServer(
         ("0.0.0.0", 8080),
-        RequestHandlerClass=ForkingEchoRequestHandler,
+        RequestHandlerClass=SerialPortServerRequestHandler,
         bind_and_activate=False)
 
     server.allow_reuse_address = True

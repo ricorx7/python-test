@@ -1,5 +1,5 @@
 # python-test
-Testing Python 
+Expermenting with Python
 
 #To Compile pyside2 from source for OSX
 
@@ -19,6 +19,8 @@ git clone --recursive http://code.qt.io/cgit/pyside/pyside-setup.git/
 ```
 python3 setup.py install ---ignore-git --build-tests --qmake=/usr/local/Cellar/qt5/5.6.1-1/bin/qmake --cmake=/usr/local/bin/cmake --openssl=/usr/bin/openssl
 ```
+
+
 
 #SerialPortServer
 This will allow the creation of multiple TCP connections and pass the serial data to all connections 
