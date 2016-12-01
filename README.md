@@ -5,7 +5,7 @@ Testing Python
 
 ##Download and install QT5.6
 ```
-curl -O <https://raw.githubusercontent.com/Homebrew/homebrew-core/fdfc724dd532345f5c6cdf47dc43e99654e6a5fd/Formula/qt5.rb>
+curl -O https://raw.githubusercontent.com/Homebrew/homebrew-core/fdfc724dd532345f5c6cdf47dc43e99654e6a5fd/Formula/qt5.rb
 ```
 ```
 brew install ./qt5.rb
