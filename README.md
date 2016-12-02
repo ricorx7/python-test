@@ -1,7 +1,7 @@
 # python-test
 Expermenting with Python
 
-#To Compile pyside2 from source for OSX
+__To Compile pyside2 from source for OSX__
 
 ##Download and install QT5.6
 ```
@@ -21,6 +21,10 @@ python3 setup.py install ---ignore-git --build-tests --qmake=/usr/local/Cellar/q
 ```
 
 
+__twisted_SerialPortServer.py__
+This will allow a user to connect through TCP to a serial port connection.  It allows mulitple users to connect and receive the same serial data.
 
-#SerialPortServer
+
+__SerialPortServer__
 This will allow the creation of multiple TCP connections and pass the serial data to all connections 
+
