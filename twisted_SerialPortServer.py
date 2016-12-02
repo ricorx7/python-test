@@ -13,13 +13,12 @@ class SerialDevice(basic.LineReceiver):
 
     def connectionMade(self):
         '''Connect the serial port'''
-        print('Connection made!')
-        #self.sendString('CSHOW\n')
+        print('Serial Connection made!')
 
     def connectionLost(self, reason):
         '''Disconnect the serial port'''
         #self.factory.clients.remove(self)
-        print('Connection lost')
+        print('Serial Connection lost')
 
     def dataReceived(self, data):
         '''Send data to all the clients connected on the TCP port'''
@@ -28,60 +27,63 @@ class SerialDevice(basic.LineReceiver):
             c.transport.write(data)
             #c.sendLine(data)
 
-    def lineReceived(self, data):
-        '''Do nothing for now'''
-        pass
+    def lineReceived(self, line):
+        print('Serial line received: ', line)
 
     def rawDataReceived(self, data):
-        '''Do nothing for now'''
-        pass
+        print('Serial Raw Data received: ', data)
 
 
 class SerialTcpProtocol(basic.LineReceiver):
     '''Create TCP Connections for user that want to get serial data'''
-    delimiter = ""
 
-    def __init__(self, factory, commport, baud):
+    def __init__(self, factory, comm_port, baud):
         self.factory = factory
 
         # Create a Serial Port device to read in serial data
-        SerialPort(SerialDevice(self, self), commport, reactor, baudrate=baud)
+        self.serial_port = SerialPort(SerialDevice(self, self), comm_port, reactor, baudrate=baud)
         print('Serial Port Thread started')
-
 
     def connectionMade(self):
         '''Add TCP connections'''
         self.factory.clients.add(self)
-        print('Connection made')
+        print('TCP Connection made')
 
     def connectionLost(self, reason):
         '''Disconnect TCP Connections'''
         self.factory.clients.remove(self)
-        print('Connection lost')
+        print('TCP Connection lost')
+
+    def dataReceived(self, data):
+        '''Receive data from the TCP port and send the data to the serial port'''
+        self.serial_port.writeSomeData(data)
+        print('TCP data received: ', data.decode("ascii"))
 
     def lineReceived(self, line):
-        pass
+        print('TCP line received: ', line)
         #for c in self.factory.clients:
             #source = u"<{}> ".format(self.transport.getHost()).encode("ascii")
             #c.sendLine(source + line)
             #print('line received: ', line)
 
     def rawDataReceived(self, data):
-        pass
+        print('TCP Raw data received: ', data)
     #    for c in self.factory.clients:
             #source = u"<{}> ".format(self.transport.getHost()).encode("ascii")
             #c.sendLine(source + data)
    #         print('data received: ', data)
 
 
-class PubFactory(protocol.Factory):
+class AdcpFactory(protocol.Factory):
     '''Create a serial connection and allow TCP clients to view the data'''
-    def __init__(self):
+    def __init__(self, comm_port, baud):
         self.clients = set()
+        self.serial_comm_port = comm_port
+        self.serial_baud = baud
 
     def buildProtocol(self, addr):
-        return SerialTcpProtocol(self, '/dev/cu.usbserial-FTYNODPO', 115200)
+        return SerialTcpProtocol(self, self.serial_comm_port, self.serial_baud)
 
 # Set the PORT to output ADCP data
-endpoints.serverFromString(reactor, "tcp:55056").listen(PubFactory())
+endpoints.serverFromString(reactor, "tcp:55056").listen(AdcpFactory('/dev/cu.usbserial-FTYNODPO', 115200))
 reactor.run()

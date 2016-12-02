@@ -1,30 +1,42 @@
 import socket
+import sys, getopt
 
 if __name__ == '__main__':
-    #import socket
-    #import threading
-
-    # Create the server
-    #SERVER = SerialPortServer('/dev/cu.usbserial-FTYNODPO', 115200)
-
-    #ip, port = SERVER.server.server_address # find out what port we were given
+    argv = sys.argv[1:]
+    port = 55056
+    try:
+        opts, args = getopt.getopt(argv,"p:",["port="])
+    except getopt.GetoptError:
+        print('client_serial_rcvr.py  -p <port>')
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print('client_serial_rcvr.py -p <port>')
+            sys.exit()
+        elif opt in ("-p", "--port"):
+            port = int(arg)
 
 
     # Connect to the server
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect(('localhost', 55056))
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(('localhost', port))
+    except ConnectionRefusedError as err:
+        print(err)
+        sys.exit(2)
+    except:
+        print('Error Opening socket')
+        sys.exit(2)
 
-    # Send the data
-    #message = 'Hello, world'
-    #print('Sending : "%s"' % message)
-    #len_sent = s.send(message.encode())
-    count = 0
-
-    while count < 1000:
-        count += 1
-        # Receive a response
-        response = s.recv(1024)
-        print('"%s"' % response)
+    try:
+        while True:
+            # Receive a response
+            response = s.recv(1024)
+            print('"%s"' % response)
+    except KeyboardInterrupt:
+        # Ctrl-C will stop the application
+        pass
 
     s.close()
+    print("Close the socket")
 

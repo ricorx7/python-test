@@ -1,7 +1,7 @@
 # python-test
 Expermenting with Python
 
-__To Compile pyside2 from source for OSX__
+#To Compile pyside2 from source for OSX
 
 ##Download and install QT5.6
 ```
