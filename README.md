@@ -21,10 +21,10 @@ python3 setup.py install ---ignore-git --build-tests --qmake=/usr/local/Cellar/q
 ```
 
 
-__twisted_SerialPortServer.py__
+======twisted_SerialPortServer.py
 This will allow a user to connect through TCP to a serial port connection.  It allows mulitple users to connect and receive the same serial data.
 
 
-__SerialPortServer__
+======SerialPortServer
 This will allow the creation of multiple TCP connections and pass the serial data to all connections 
 
