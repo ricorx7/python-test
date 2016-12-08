@@ -1,3 +1,5 @@
+
+
 import socket
 import sys, getopt
 
@@ -11,7 +13,7 @@ class tcp_reader_client():
         self.reconnect(port)
         self.read()
 
-    def reconnect(self,port):
+    def reconnect(self, port):
         """
         Connect to the server.
         """
