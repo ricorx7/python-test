@@ -9,5 +9,5 @@ data = [Heatmap( z=df.values.tolist(), colorscale='Viridis')]
 
 plotly.offline.plot({
     "data": data,
-    "layout": Layout(title="hello world")
-})
+    "layout": Layout(title="hello world"),
+}, filename='test1')
